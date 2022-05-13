@@ -1,7 +1,7 @@
 import numpy as np
 import paho.mqtt.client as MQTT
-import time #errore import libreria time
-import json #errore import libreria json
+import time
+import json
 
 class Publisher:
     def __init__(self, broker, port, topic, clientID):
@@ -11,21 +11,21 @@ class Publisher:
         self.port = port
         self.client = MQTT.Client();
         self.message = ""
-        self.client.on_connect = self.onConnect() #client error not MQTT
+        self.client.on_connect = self.onConnect()
 
     def onConnect(self):
         print("Connected to broker: " + self.broker)
 
     def start(self):
-        self.client.connect(self.broker, self.port) #client error not MQTT
-        self.client.loop_start() #client error not MQTT
+        self.client.connect(self.broker, self.port)
+        self.client.loop_start()
 
     def publish(self, topic, message):
-        self.client.publish(topic, json.dumps(message), 2) #client error not MQTT e trasformazione dictionary in stringa
+        self.client.publish(topic, json.dumps(message), 2)
 
     def stop(self):
-        self.client.disconnect() #client error not MQTT
-        self.client.loop_stop() #client error not MQTT
+        self.client.disconnect()
+        self.client.loop_stop()
 
     def encode(self, v, n, u):
         self.message = {
@@ -33,7 +33,7 @@ class Publisher:
             "e": [{
                 "n": n,
                 "u": u,
-                "t": time.time(), #time.time()
+                "t": time.time(),
                 "v": v
             }]
         }
@@ -45,10 +45,10 @@ if __name__ == "__main__":
     clientID = "/tiot/devices/1234"
     topic = "/tiot/devices/1234"
     device = Publisher(broker, port, topic, clientID)
-    device.start() #errore parentesi e chiamata funzione ()
+    device.start()
 
     while True:
         temp = np.random.uniform(15,30,1)[0]
         device.encode(temp, "temperature", "C")
         device.publish(topic, device.message)
-        time.sleep(600) #il tempo della sleep e da intendersi come secondi (Errore commenti)
+        time.sleep(600)
